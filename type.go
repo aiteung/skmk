@@ -14,4 +14,5 @@ type TblMhs struct {
 	NamaPekerjaan   string `json:"nama_pekerjaan"`
 	AlamatOrangTua  string `json:"AlamatOrangTua"`
 	KotaKodePos     string `json:"kota_kodepos"`
+	TlpMhs          string `json:"Tlp_Mhs"`
 }
