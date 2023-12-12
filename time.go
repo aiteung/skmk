@@ -27,3 +27,31 @@ func GetCurrentYear() int {
 	currentYear := time.Now().Year()
 	return currentYear
 }
+
+func translateMonthToIndonesian(month time.Month) string {
+	translations := map[time.Month]string{
+		time.January:   "Januari",
+		time.February:  "Februari",
+		time.March:     "Maret",
+		time.April:     "April",
+		time.May:       "Mei",
+		time.June:      "Juni",
+		time.July:      "Juli",
+		time.August:    "Agustus",
+		time.September: "September",
+		time.October:   "Oktober",
+		time.November:  "November",
+		time.December:  "Desember",
+	}
+
+	return translations[month]
+}
+
+// func GetCurrentDate() string {
+// 	currentTime := time.Now()
+// 	day := currentTime.Format("02")
+// 	month := translateMonthToIndonesian(currentTime.Month())
+// 	year := currentTime.Format("2006")
+
+// 	return fmt.Sprintf("%s %s %s", day, month, year)
+// }
