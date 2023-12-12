@@ -46,7 +46,9 @@ func ReplaceSkmk(data TblMhs, akademik AcademicYear, db *sql.DB) (val []byte) {
 	drv := drive2.NewGoogleDrive(srvDrive)
 	doc := docs2.NewGoogleDocs(srvDocs)
 
-	docDup, err := drv.CreateDuplicate(docId, "DUP 1", "TESTING DUPLICATE", nil)
+	namafile := data.Nim
+
+	docDup, err := drv.CreateDuplicate(docId, fmt.Sprintf("SKMK-%s", namafile), "", nil)
 	if err != nil {
 		log.Fatalf("Unable to create duplicate: %v\n", err)
 		return
