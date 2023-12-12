@@ -18,13 +18,13 @@ import (
 // Retrieves a token, saves the token, then returns the generated client.
 func ReplaceSkmk(data TblMhs) (val []byte) {
 	ctx := context.Background()
-	filepath := "./credentials.json"
+	filepath := "credentials.json"
 	cfg, err := gwrap.NewGoogleConfig(filepath, drive.DriveScope, drive.DriveReadonlyScope, docs.DocumentsScope, docs.DocumentsReadonlyScope)
 	if err != nil {
 		log.Fatalf("Unable to parse client secret file to config: %v\n", err)
 		return
 	}
-	client := gwrap.GetClient(cfg, "./token.json")
+	client := gwrap.GetClient(cfg, "token.json")
 
 	srvDocs, err := docs.NewService(ctx, option.WithHTTPClient(client))
 	srvDrive, err := drive.NewService(ctx, option.WithHTTPClient(client))
@@ -48,7 +48,7 @@ func ReplaceSkmk(data TblMhs) (val []byte) {
 	fmt.Printf("Duplicate ID : %s\n", docDup)
 
 	listReplace := make([]*docs.Request, 0, 11)
-	req1 := docs2.ReplaceTextDocs("{{NamaMhs}}", data.NamaMhs)
+	req1 := docs2.ReplaceTextDocs("{{Nama_Mhs}}", data.NamaMhs)
 	req2 := docs2.ReplaceTextDocs("{{TempatTglLahir}}", data.TempatTglLahir)
 	listReplace = append(listReplace, req1, req2)
 	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{NamaAgama}}", data.NamaAgama))
@@ -78,7 +78,8 @@ func ReplaceSkmk(data TblMhs) (val []byte) {
 
 	val = buf.Bytes()
 
-	_, err = drv.DeleteFiles(docDup)
+	//Hapus file di google docs
+	// _, err = drv.DeleteFiles(docDup)
 
 	return
 }
