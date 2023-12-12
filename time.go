@@ -1,6 +1,9 @@
 package skmk
 
-import "time"
+import (
+	"fmt"
+	"time"
+)
 
 func convertRomanMonth() string {
 	currentMonth := time.Now().Month()
@@ -47,11 +50,11 @@ func translateMonthToIndonesian(month time.Month) string {
 	return translations[month]
 }
 
-// func GetCurrentDate() string {
-// 	currentTime := time.Now()
-// 	day := currentTime.Format("02")
-// 	month := translateMonthToIndonesian(currentTime.Month())
-// 	year := currentTime.Format("2006")
+func GetCurrentDate() string {
+	currentTime := time.Now()
+	day := currentTime.Format("02")
+	month := translateMonthToIndonesian(currentTime.Month())
+	year := currentTime.Format("2006")
 
-// 	return fmt.Sprintf("%s %s %s", day, month, year)
-// }
+	return fmt.Sprintf("%s %s %s", day, month, year)
+}
