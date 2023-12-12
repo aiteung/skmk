@@ -2,6 +2,7 @@ package skmk
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -26,9 +27,10 @@ func convertRomanMonth() string {
 	return romanMonths[currentMonth]
 }
 
-func GetCurrentYear() int {
+func GetCurrentYear() string {
 	currentYear := time.Now().Year()
-	return currentYear
+	tahunString := strconv.Itoa(currentYear)
+	return tahunString
 }
 
 func translateMonthToIndonesian(month time.Month) string {

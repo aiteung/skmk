@@ -53,9 +53,6 @@ func GetCurrentAcademicYear(db *sql.DB) (*AcademicYear, error) {
 			return nil, err
 		}
 
-		// Print or perform operations as needed
-		fmt.Printf("Tahun Akademik Aktif: %s\n", tahunAkademik)
-
 		// Return the AcademicYear struct with the retrieved value
 		return &AcademicYear{ThnAkademik: tahunAkademik}, nil
 	}

@@ -3,6 +3,7 @@ package skmk
 import (
 	"bytes"
 	"context"
+	"database/sql"
 	"fmt"
 	"io"
 	"log"
@@ -16,7 +17,12 @@ import (
 )
 
 // Retrieves a token, saves the token, then returns the generated client.
-func ReplaceSkmk(data TblMhs) (val []byte) {
+func ReplaceSkmk(data TblMhs, akademik AcademicYear, db *sql.DB) (val []byte) {
+	//Get Current Month
+	bulan := convertRomanMonth()
+	tahun := GetCurrentYear()
+	thnakademik, _ := GetCurrentAcademicYear(db)
+	tglbulantahun := GetCurrentDate()
 	ctx := context.Background()
 	filepath := "credentials.json"
 	cfg, err := gwrap.NewGoogleConfig(filepath, drive.DriveScope, drive.DriveReadonlyScope, docs.DocumentsScope, docs.DocumentsReadonlyScope)
@@ -51,6 +57,8 @@ func ReplaceSkmk(data TblMhs) (val []byte) {
 	req1 := docs2.ReplaceTextDocs("{{Nama_Mhs}}", data.NamaMhs)
 	req2 := docs2.ReplaceTextDocs("{{TempatTglLahir}}", data.TempatTglLahir)
 	listReplace = append(listReplace, req1, req2)
+	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{Bulan}}", bulan))
+	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{Tahun}}", tahun))
 	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{NamaAgama}}", data.NamaAgama))
 	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{AlamatMhs}}", data.AlamatMhs))
 	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{Prodi}}", data.Prodi))
@@ -59,6 +67,8 @@ func ReplaceSkmk(data TblMhs) (val []byte) {
 	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{NamaPekerjaan}}", data.NamaPekerjaan))
 	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{AlamatOrangTua}}", data.AlamatOrangTua))
 	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{KotaKodePos}}", data.KotaKodePos))
+	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{ThnAkademik}}", thnakademik.ThnAkademik))
+	listReplace = append(listReplace, docs2.ReplaceTextDocs("{{TglBulanTahun}}", tglbulantahun))
 
 	err = doc.FindAndReplace(docDup, listReplace...)
 	if err != nil {
