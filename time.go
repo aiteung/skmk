@@ -22,3 +22,8 @@ func convertRomanMonth() string {
 
 	return romanMonths[currentMonth]
 }
+
+func GetCurrentYear() int {
+	currentYear := time.Now().Year()
+	return currentYear
+}
