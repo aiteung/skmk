@@ -2,6 +2,7 @@ package skmk
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/aiteung/module/model"
 )
@@ -34,4 +35,31 @@ func GetMhsByPhoneNumber(db *sql.DB, Pesan model.IteungMessage) (TblMhs, error) 
 	}
 
 	return result, nil
+}
+
+func GetCurrentAcademicYear(db *sql.DB) (*AcademicYear, error) {
+	// Query to get the active academic year
+	query := "SELECT DISTINCT Thn_Akademik FROM Perwalian WHERE Tgl_Prw <= GETDATE() AND GETDATE() <= DATEADD(YEAR, 1, Tgl_Prw)"
+	rows, err := db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	// Loop through the query results
+	for rows.Next() {
+		var tahunAkademik string
+		if err := rows.Scan(&tahunAkademik); err != nil {
+			return nil, err
+		}
+
+		// Print or perform operations as needed
+		fmt.Printf("Tahun Akademik Aktif: %s\n", tahunAkademik)
+
+		// Return the AcademicYear struct with the retrieved value
+		return &AcademicYear{ThnAkademik: tahunAkademik}, nil
+	}
+
+	// If no rows were returned, you may want to handle this case accordingly
+	return nil, fmt.Errorf("no active academic year found")
 }

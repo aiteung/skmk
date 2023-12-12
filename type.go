@@ -1,5 +1,7 @@
 package skmk
 
+import "time"
+
 type TblMhs struct {
 	NamaMhs         string `json:"Nama_Mhs"`
 	TempatTglLahir  string `json:"ttl"`
@@ -15,4 +17,11 @@ type TblMhs struct {
 	AlamatOrangTua  string `json:"AlamatOrangTua"`
 	KotaKodePos     string `json:"kota_kodepos"`
 	TlpMhs          string `json:"Tlp_Mhs"`
+}
+
+type AcademicYear struct {
+	Nim              string
+	ThnAkademik      string
+	Periode          int
+	TanggalPerwalian time.Time
 }
