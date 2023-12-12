@@ -25,3 +25,21 @@ type AcademicYear struct {
 	Periode          int
 	TanggalPerwalian time.Time
 }
+
+type Email struct {
+	From        string  `json:"from"`
+	To          string  `json:"to"`
+	Subject     string  `json:"subject"`
+	Body        string  `json:"body"`
+	Attachments []Files `json:"attachments"`
+}
+
+type Files struct {
+	Mimetype string `json:"mimetype"`
+	Name     string `json:"name"`
+	Base64   string `json:"base64"`
+}
+
+type StatusEmail struct {
+	Status string `json:"status"`
+}
