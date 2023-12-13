@@ -21,3 +21,4 @@
 go.work
 query_test.go
 cmd
+db.go
