@@ -12,11 +12,13 @@ type TblMhs struct {
 	Prodi           string `json:"prodi"`
 	Nim             string `json:"Nim"`
 	NamaAyah        string `json:"Nama_Ayah"`
-	IDPekerjaanAyah string `json:"id_pekerjaan_ayah"`
+	IDPekerjaanAyah int    `json:"id_pekerjaan_ayah"`
 	NamaPekerjaan   string `json:"nama_pekerjaan"`
 	AlamatOrangTua  string `json:"AlamatOrangTua"`
 	KotaKodePos     string `json:"kota_kodepos"`
 	TlpMhs          string `json:"Tlp_Mhs"`
+	Email           string `json:"Email"`
+	ThnAkademik     string
 }
 
 type AcademicYear struct {
@@ -42,4 +44,11 @@ type Files struct {
 
 type StatusEmail struct {
 	Status string `json:"status"`
+}
+
+type SKMKResponse struct {
+	Nama     string `json:"nama"`
+	Npm      string `json:"npm"`
+	Email    string `json:"email"`
+	Filename string `json:"filename"`
 }

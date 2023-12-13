@@ -6,7 +6,7 @@ import (
 	"github.com/imroc/req/v3"
 )
 
-func SendEmailTo(to, subject, body string, attachment ...Files) (res bool) {
+func SendEmailTo(urlEmail, to, subject, body string, attachment ...Files) (res bool) {
 	data := Email{
 		From:        "ITeung Artificial Intellegence<iteung@ulbi.ac.id>",
 		To:          to,
@@ -31,7 +31,7 @@ func SendEmailTo(to, subject, body string, attachment ...Files) (res bool) {
 		SetHeader("Connection", "keep-alive").
 		SetHeader("Accept-Language", "en-US,en;q=0.8,id;q=0.6").
 		SetBody(jsonString).
-		Post(EmailURL)
+		Post(urlEmail)
 
 	if err != nil {
 		return
