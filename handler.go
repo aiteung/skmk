@@ -16,7 +16,7 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 	if strings.Contains(strings.ToLower(Pesan.Message), "minta") {
 		// Mengekstrak kata setelah "minta" menggunakan ekspresi reguler
 		pesanSplit := strings.Fields(Pesan.Message)
-		if len(pesanSplit) > 1 {
+		if len(pesanSplit) > 2 {
 			// matches[1] berisi kata setelah "minta"
 			if strings.Contains(strings.ToLower(pesanSplit[2]), "skmk") {
 				// Handle logika untuk "minta skmk"
