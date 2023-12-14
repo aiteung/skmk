@@ -12,33 +12,33 @@ import (
 )
 
 func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply string) {
-	// Cek apakah pesan mengandung kata "minta"
-	if strings.Contains(strings.ToLower(Pesan.Message), "minta") {
-		// Mengekstrak kata setelah "minta" menggunakan ekspresi reguler
+	// Cek apakah pesan mengandung kata "kirim"
+	if strings.Contains(strings.ToLower(Pesan.Message), "kirim") {
+		// Mengekstrak kata setelah "kirim" menggunakan ekspresi reguler
 		log.Printf("Pesan.Message sebelum ekstraksi: %v", Pesan.Message)
 		pesanSplit := strings.Fields(Pesan.Message)
 		log.Printf("Pesan.Message setelah ekstraksi: %v", pesanSplit)
 
-		mintaIndex := -1
+		kirimIndex := -1
 		for i, word := range pesanSplit {
 			log.Printf("Iterasi ke-%d, word: %s", i, word)
-			if strings.EqualFold(word, "minta") {
-				mintaIndex = i
+			if strings.EqualFold(word, "kirim") {
+				kirimIndex = i
 				break
 			}
 		}
 
-		log.Printf("mintaIndex: %v", mintaIndex)
+		log.Printf("kirimIndex: %v", kirimIndex)
 
-		if mintaIndex != -1 && mintaIndex+1 < len(pesanSplit) {
+		if kirimIndex != -1 && kirimIndex+1 < len(pesanSplit) {
 			log.Printf("Nilai pesanSplit[1]: %v", pesanSplit[1])
 			log.Printf("Panjang pesanSplit[1]: %v", len(pesanSplit[1]))
 			log.Printf("Karakter pesanSplit[1]: %v", pesanSplit[1])
-			log.Printf("Masuk ke dalam kondisi 'minta skmk'")
+			log.Printf("Masuk ke dalam kondisi 'kirim skmk'")
 
-			// matches[1] berisi kata setelah "minta"
-			if strings.EqualFold(strings.ToLower(pesanSplit[mintaIndex+1]), "skmk") {
-				// Handle logika untuk "minta skmk"
+			// matches[1] berisi kata setelah "kirim"
+			if strings.EqualFold(strings.ToLower(pesanSplit[kirimIndex+1]), "skmk") {
+				// Handle logika untuk "kirim skmk"
 				dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
 				if err != nil {
 					reply = MessageLengkapiData()
@@ -51,7 +51,7 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 					return reply
 				}
 
-				// Handle logika untuk "minta skmk"
+				// Handle logika untuk "kirim skmk"
 				SkmkFile := ReplaceSkmk(dataMhs, *tahunakademik, db)
 				baseString := base64.StdEncoding.EncodeToString(SkmkFile)
 				filename := fmt.Sprintf("SKMK - %s - %s.pdf", dataMhs.NamaMhs, dataMhs.Nim)
@@ -80,17 +80,17 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 
 				return MessageBerhasilMintaSkmk(dataMhs)
 			} else {
-				// Handle logika untuk "minta" tanpa "skmk"
-				log.Printf("Masuk ke dalam kondisi 'minta' tanpa 'skmk'")
+				// Handle logika untuk "kirim" tanpa "skmk"
+				log.Printf("Masuk ke dalam kondisi 'kirim' tanpa 'skmk'")
 				return "Kirim apa broww???"
 			}
 		} else {
-			// Handle logika jika tidak ada kata setelah "minta"
-			return "Yaiyaa minta, minta nya minta apaa???"
+			// Handle logika jika tidak ada kata setelah "kirim"
+			return "Yaiyaa kirim, kirim nya kirim apaa???"
 		}
 	} else {
-		// Handle logika jika tidak ada kata "minta" dalam pesan
-		return "Apa yang Kakak minta?"
+		// Handle logika jika tidak ada kata "kirim" dalam pesan
+		return "Apa yang Kakak kirim?"
 	}
 }
 
