@@ -11,7 +11,7 @@ import (
 )
 
 func SKMKCreator(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply string) {
-	dataMhs, err := GetMhsByPhoneNumber(db, Pesan)
+	dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
 	if err != nil {
 		reply = MessageLengkapiData()
 		return reply
