@@ -12,7 +12,8 @@ import (
 )
 
 func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply string) {
-	// Cek apakah pesan mengandung kata "minta" dan "skmk"
+	log.Printf("Received message: %s", Pesan.Message)
+	// Cek apakah pesan mengandung kata "minta skmk"
 	if strings.Contains(strings.ToLower(Pesan.Message), "minta skmk") {
 		// Handle logika untuk "minta skmk"
 		dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
@@ -53,8 +54,8 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 
 		return MessageBerhasilMintaSkmk(dataMhs)
 	} else {
-		// Handle logika jika tidak ada kata "minta skmk" dalam pesan
-		return MessageGagalMintaSkmk()
+		// Handle logika jika pesan tidak sesuai dengan ekspektasi
+		return "Apa yang Kakak minta?"
 	}
 }
 
