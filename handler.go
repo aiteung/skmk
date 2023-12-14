@@ -13,26 +13,28 @@ import (
 )
 
 func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply string) {
-	dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
-	if err != nil {
-		reply = MessageLengkapiData()
-		return reply
-	}
-
-	tahunakademik, err := GetCurrentAcademicYear(db)
-	if err != nil {
-		reply = "Tidak ada tahun akademik aktif"
-		return reply
-	}
-
-	if strings.Contains(strings.ToLower(Pesan.Message), "kirim") {
-		// Mengekstrak kata setelah "kirim" menggunakan ekspresi reguler
-		re := regexp.MustCompile(`kirim\s+(\w+)`)
+	// Cek apakah pesan mengandung kata "minta"
+	if strings.Contains(strings.ToLower(Pesan.Message), "minta") {
+		// Mengekstrak kata setelah "minta" menggunakan ekspresi reguler
+		re := regexp.MustCompile(`minta\s+(\w+)`)
 		matches := re.FindStringSubmatch(Pesan.Message)
 		if len(matches) > 1 {
-			// matches[1] berisi kata setelah "kirim"
+			// matches[1] berisi kata setelah "minta"
 			if strings.Contains(strings.ToLower(matches[1]), "skmk") {
-				// Handle logika untuk "kirim skmk"
+				// Handle logika untuk "minta skmk"
+				dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
+				if err != nil {
+					reply = MessageLengkapiData()
+					return reply
+				}
+
+				tahunakademik, err := GetCurrentAcademicYear(db)
+				if err != nil {
+					reply = "Tidak ada tahun akademik aktif"
+					return reply
+				}
+
+				// Handle logika untuk "minta skmk"
 				SkmkFile := ReplaceSkmk(dataMhs, *tahunakademik, db)
 				baseString := base64.StdEncoding.EncodeToString(SkmkFile)
 				filename := fmt.Sprintf("SKMK - %s - %s.pdf", dataMhs.NamaMhs, dataMhs.Nim)
@@ -66,11 +68,11 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 			}
 		} else {
 			// Handle logika jika tidak ada kata setelah "minta"
-			return "Yaiyaa kirim, kirim nya kirim apaa???"
+			return "Yaiyaa minta, minta nya minta apaa???"
 		}
 	} else {
 		// Handle logika jika tidak ada kata "minta" dalam pesan
-		return "skmk apaan???"
+		return "Apa yang Kakak minta?"
 	}
 }
 
