@@ -15,10 +15,29 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 	// Cek apakah pesan mengandung kata "minta"
 	if strings.Contains(strings.ToLower(Pesan.Message), "minta") {
 		// Mengekstrak kata setelah "minta" menggunakan ekspresi reguler
+		log.Printf("Pesan.Message sebelum ekstraksi: %v", Pesan.Message)
 		pesanSplit := strings.Fields(Pesan.Message)
-		if len(pesanSplit) > 1 {
+		log.Printf("Pesan.Message setelah ekstraksi: %v", pesanSplit)
+
+		mintaIndex := -1
+		for i, word := range pesanSplit {
+			log.Printf("Iterasi ke-%d, word: %s", i, word)
+			if strings.EqualFold(word, "minta") {
+				mintaIndex = i
+				break
+			}
+		}
+
+		log.Printf("mintaIndex: %v", mintaIndex)
+
+		if mintaIndex != -1 && mintaIndex+1 < len(pesanSplit) {
+			log.Printf("Nilai pesanSplit[1]: %v", pesanSplit[1])
+			log.Printf("Panjang pesanSplit[1]: %v", len(pesanSplit[1]))
+			log.Printf("Karakter pesanSplit[1]: %v", pesanSplit[1])
+			log.Printf("Masuk ke dalam kondisi 'minta skmk'")
+
 			// matches[1] berisi kata setelah "minta"
-			if strings.Contains(strings.ToLower(pesanSplit[1]), "skmk") {
+			if strings.EqualFold(strings.ToLower(pesanSplit[mintaIndex+1]), "skmk") {
 				// Handle logika untuk "minta skmk"
 				dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
 				if err != nil {
@@ -62,6 +81,7 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 				return MessageBerhasilMintaSkmk(dataMhs)
 			} else {
 				// Handle logika untuk "minta" tanpa "skmk"
+				log.Printf("Masuk ke dalam kondisi 'minta' tanpa 'skmk'")
 				return "Kirim apa broww???"
 			}
 		} else {
