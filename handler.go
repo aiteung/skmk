@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"encoding/base64"
 	"log"
-	"regexp"
 	"strings"
 
 	"fmt"
@@ -16,11 +15,10 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 	// Cek apakah pesan mengandung kata "minta"
 	if strings.Contains(strings.ToLower(Pesan.Message), "minta") {
 		// Mengekstrak kata setelah "minta" menggunakan ekspresi reguler
-		re := regexp.MustCompile(`minta\s+(\w+)`)
-		matches := re.FindStringSubmatch(Pesan.Message)
-		if len(matches) > 1 {
+		pesanSplit := strings.Fields(Pesan.Message)
+		if len(pesanSplit) > 1 {
 			// matches[1] berisi kata setelah "minta"
-			if strings.Contains(strings.ToLower(matches[1]), "skmk") {
+			if strings.Contains(strings.ToLower(pesanSplit[1]), "skmk") {
 				// Handle logika untuk "minta skmk"
 				dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
 				if err != nil {
@@ -45,7 +43,7 @@ func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply stri
 					Base64:   baseString,
 				}
 
-				log.Printf("Sending email to: %s, Subject: %s", dataMhs.Email, "Surat Keterangan Masih Kuliah ULBI")
+				// log.Printf("Sending email to: %s, Subject: %s", dataMhs.Email, "Surat Keterangan Masih Kuliah ULBI")
 
 				// Send email with attachment
 				StatusSend := SendEmailTo(

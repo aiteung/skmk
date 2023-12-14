@@ -7,7 +7,6 @@ require (
 	github.com/aiteung/module v0.1.0
 	github.com/denisenkom/go-mssqldb v0.12.3
 	github.com/imroc/req/v3 v3.42.2
-	golang.org/x/oauth2 v0.15.0
 	google.golang.org/api v0.153.0
 )
 
@@ -54,6 +53,7 @@ require (
 	golang.org/x/exp v0.0.0-20230817173708-d852ddb80c63 // indirect
 	golang.org/x/mod v0.12.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
+	golang.org/x/oauth2 v0.15.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect

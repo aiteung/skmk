@@ -53,7 +53,7 @@ func ReplaceSkmk(data TblMhs, akademik AcademicYear, db *sql.DB) (val []byte) {
 		log.Fatalf("Unable to create duplicate: %v\n", err)
 		return
 	}
-	fmt.Printf("Duplicate ID : %s\n", docDup)
+	// fmt.Printf("Duplicate ID : %s\n", docDup)
 
 	listReplace := make([]*docs.Request, 0, 11)
 	req1 := docs2.ReplaceTextDocs("{{Nama_Mhs}}", data.NamaMhs)
@@ -91,7 +91,7 @@ func ReplaceSkmk(data TblMhs, akademik AcademicYear, db *sql.DB) (val []byte) {
 	val = buf.Bytes()
 
 	//Hapus file di google docs
-	// _, err = drv.DeleteFiles(docDup)
+	_, err = drv.DeleteFiles(docDup)
 
 	return
 }
