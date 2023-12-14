@@ -11,20 +11,20 @@ import (
 	"github.com/aiteung/module/model"
 )
 
-func SKMKCreator(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply string) {
+func Handler(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply string) {
+	dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
+	if err != nil {
+		reply = MessageLengkapiData()
+		return reply
+	}
+
+	tahunakademik, err := GetCurrentAcademicYear(db)
+	if err != nil {
+		reply = "Tidak ada tahun akademik aktif"
+		return reply
+	}
+
 	if strings.Contains(strings.ToLower(Pesan.Message), "skmk") {
-		dataMhs, err := GetMhsByPhoneNumber(db, Pesan.Phone_number)
-		if err != nil {
-			reply = MessageLengkapiData()
-			return reply
-		}
-
-		tahunakademik, err := GetCurrentAcademicYear(db)
-		if err != nil {
-			reply = "Tidak ada tahun akademik aktif"
-			return reply
-		}
-
 		SkmkFile := ReplaceSkmk(dataMhs, *tahunakademik, db)
 		baseString := base64.StdEncoding.EncodeToString(SkmkFile)
 		filename := fmt.Sprintf("SKMK - %s - %s.pdf", dataMhs.NamaMhs, dataMhs.Nim)
@@ -51,9 +51,9 @@ func SKMKCreator(urlEmail string, db *sql.DB, Pesan model.IteungMessage) (reply 
 			return reply
 		}
 
-		return MessageBerhasilMintaSkmk()
+		return MessageBerhasilMintaSkmk(dataMhs)
 	} else {
 		// Jika tidak ada kata kunci "skmk" dalam pesan, berikan respons yang sesuai
-		return "Tidak ada permintaan SKMK dalam pesan"
+		return "Keyword Anda Salah"
 	}
 }
